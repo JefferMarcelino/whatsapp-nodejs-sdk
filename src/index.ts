@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import api from './services/api';
-import type { ButtonReply, InteractiveMessageType, ListReply, MediaMessageType, MessageType } from './types/Message';
+import type { ButtonReply, InteractiveMessageType, ListReply, MediaMessageType, MessageType, WhatsAppWebhookPayload } from './types/Message';
 import { isButtonReply, isListReply } from './types/guards';
 
 export class WhatsAppClient {
@@ -136,7 +136,7 @@ export class WhatsAppClient {
     link: string, 
     caption?: string, 
     messageId?: string
-  ) {
+  ): Promise<AxiosResponse<any, any>> {
     const data = {
       [`${ type }`]: {
         link,
@@ -146,4 +146,42 @@ export class WhatsAppClient {
 
     return this.sendMessage(number, type, data, messageId);
   };
+
+  /**
+   * Extract the contact's name from the WhatsApp webhook payload.
+   * 
+   * @param payload - The WhatsApp webhook payload.
+   * @returns {string | null} - Returns the contact's name, or null if not found.
+   */
+  public getContactName(payload: WhatsAppWebhookPayload): string | null {
+    const contact = payload.value.contacts[0];
+    return contact?.profile?.name || null;
+  };
+
+  /**
+   * Extract the contact's WhatsApp number from the WhatsApp webhook payload.
+   * 
+   * @param payload - The WhatsApp webhook payload.
+   * @returns {string | null} - Returns the contact's WhatsApp number, or null if not found.
+   */
+  public getContactNumber(payload: WhatsAppWebhookPayload): string | null {
+    const message = payload.value.messages[0];
+    return message?.from || null;
+  }
+  
+  /**
+   * Extract the text message body from the WhatsApp webhook payload.
+   * 
+   * @param payload - The WhatsApp webhook payload.
+   * @returns {string | null} - Returns the text message, or null if not found.
+   */
+  public getTextMessage(payload: WhatsAppWebhookPayload): string | null {
+    const message = payload.value.messages[0];
+
+    if (message?.type === 'text') {
+      return message.text?.body || null;
+    };
+
+    return null;
+  }
 };

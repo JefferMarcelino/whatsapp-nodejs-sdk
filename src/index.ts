@@ -154,7 +154,7 @@ export class WhatsAppClient {
    * @returns {string | null} - Returns the contact's name, or null if not found.
    */
   public getContactName(payload: WhatsAppWebhookPayload): string | null {
-    const contact = payload.entry.changes[0].value.contacts[0];
+    const contact = payload.entry[0].changes[0].value.contacts[0];
     return contact?.profile?.name || null;
   };
 
@@ -165,7 +165,7 @@ export class WhatsAppClient {
    * @returns {string | null} - Returns the contact's WhatsApp number, or null if not found.
    */
   public getContactNumber(payload: WhatsAppWebhookPayload): string | null {
-    const message =  payload.entry.changes[0].value.messages[0];
+    const message =  payload.entry[0].changes[0].value.messages[0];
     return message?.from || null;
   }
   
@@ -176,7 +176,7 @@ export class WhatsAppClient {
    * @returns {string | null} - Returns the text message, or null if not found.
    */
   public getTextMessage(payload: WhatsAppWebhookPayload): string | null {
-    const message =  payload.entry.changes[0].value.messages[0];
+    const message =  payload.entry[0].changes[0].value.messages[0];
 
     if (message?.type === 'text') {
       return message.text?.body || null;

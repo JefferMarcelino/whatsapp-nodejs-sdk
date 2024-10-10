@@ -47,7 +47,7 @@ export interface WhatsAppWebhookPayload {
         }[];
       };
     }[]
-  }
+  }[]
 }
 
 export interface Contact {

@@ -19,13 +19,13 @@ export interface ListReply {
 };
 
 export interface WhatsAppWebhookPayload {
-  object: "whatsapp_business_account";
+  object: string;
   entry: {
     id: string;
     changes: {
-      field: "messages";
+      field: string;
       value: {
-        messaging_product: "whatsapp";
+        messaging_product: string;
         metadata: {
           display_phone_number: string;
           phone_number_id: string;
@@ -41,14 +41,14 @@ export interface WhatsAppWebhookPayload {
           id: string;
           timestamp: string;
           type: string;
-          text?: {
+          text: {
             body: string;
           };
         }[];
       };
-    }[]
-  }[]
-}
+    }[];
+  }[];
+};
 
 export interface Contact {
   profile: {

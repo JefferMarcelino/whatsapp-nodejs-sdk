@@ -165,7 +165,7 @@ export class WhatsAppClient {
    * @returns {string | null} - Returns the contact's WhatsApp number, or null if not found.
    */
   public getContactNumber(payload: WhatsAppWebhookPayload): string | null {
-    const message =  payload.entry[0].changes[0].value.messages[0];
+    const message = payload.entry[0].changes[0].value.messages[0];
     return message?.from || null;
   }
   

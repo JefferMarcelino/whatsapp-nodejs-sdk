@@ -36,15 +36,7 @@ export interface WhatsAppWebhookPayload {
           };
           wa_id: string;
         }[];
-        messages: {
-          from: string;
-          id: string;
-          timestamp: string;
-          type: string;
-          text: {
-            body: string;
-          };
-        }[];
+        messages: WhatsAppWebhookTextMessage[] | WhatsAppWebhookInteractiveButtonMessage[] | WhatsAppWebhookInteractiveListMessage[];
       };
     }[];
   }[];
@@ -55,4 +47,40 @@ export interface Contact {
     name: string;
   };
   wa_id: string;
+};
+
+interface WhatsAppWebhookBase {
+  from: string;
+  id: string;
+  timestamp: string;
 }
+
+export interface WhatsAppWebhookTextMessage extends WhatsAppWebhookBase {
+  type: "text";
+  text: {
+    body: string;
+  };
+};
+
+export interface WhatsAppWebhookInteractiveButtonMessage extends WhatsAppWebhookBase {
+  type: "interactive";
+  interactive: {
+    type: "button_reply";
+    button_reply: {
+      id: string;
+      title: string;
+    }
+  };
+};
+
+export interface WhatsAppWebhookInteractiveListMessage extends WhatsAppWebhookBase {
+  type: "interactive";
+  interactive: {
+    type: "list_reply";
+    list_reply: {
+      id: string;
+      title: string;
+      description?: string;
+    }
+  };
+};

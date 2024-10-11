@@ -168,6 +168,17 @@ export class WhatsAppClient {
     const message = payload.entry[0].changes[0].value.messages[0];
     return message?.from || null;
   }
+
+  /**
+   * Extract the message type from the WhatsApp webhook payload.
+   * 
+   * @param payload - The WhatsApp webhook payload.
+   * @returns {string | null} - Returns the text message, or null if not found.
+   */
+  public getMessageType(payload: WhatsAppWebhookPayload): string | null {
+    const message = payload.entry[0].changes[0].value.messages[0];
+    return message?.type || null;
+  };
   
   /**
    * Extract the text message body from the WhatsApp webhook payload.
@@ -183,5 +194,37 @@ export class WhatsAppClient {
     };
 
     return null;
-  }
+  };
+
+  /**
+   * Extract the interactive button message from the WhatsApp webhook payload.
+   * 
+   * @param payload - The WhatsApp webhook payload.
+   * @returns {string | null} - Returns the interactive message, or null if not found.
+   */
+  public getInteractiveButtonMessage(payload: WhatsAppWebhookPayload): string | null {
+    const message = payload.entry[0].changes[0].value.messages[0];
+
+    if (message?.type === 'interactive' && message.interactive?.type === 'button_reply') {
+      return message.interactive?.button_reply.id || null;
+    };
+
+    return null;
+  };
+
+  /**
+   * Extract the interactive list message from the WhatsApp webhook payload.
+   * 
+   * @param payload - The WhatsApp webhook payload.
+   * @returns {string | null} - Returns the interactive message, or null if not found.
+   */
+  public getInteractiveListMessage(payload: WhatsAppWebhookPayload): string | null {
+    const message = payload.entry[0].changes[0].value.messages[0];
+
+    if (message?.type === 'interactive' && message.interactive?.type === 'list_reply') {
+      return message.interactive?.list_reply.id || null;
+    };
+
+    return null;
+  };
 };

@@ -148,6 +148,41 @@ export class WhatsAppClient {
   };
 
   /**
+   * Send a template message via WhatsApp.
+   *
+   * @param number - The recipient's WhatsApp number.
+   * @param templateName - The name of the template to send.
+   * @param templateLanguage - The language of the template to send.
+   * @param components - The components of the template to send.
+   * @param messageId - Optional WhatsApp message ID for context.
+   * @returns {Promise<AxiosResponse<any, any>>} - Returns the response from the WhatsApp API, or throws an error.
+   */
+  public async sendTemplateMessage(
+    number: string,
+    templateName: string,
+    templateLanguage: string,
+    components: { type: string, parameters: { type: string, text: string }[] }[],
+    messageId?: string
+  ): Promise<AxiosResponse<any, any>> {
+    const data = {
+      template: {
+        name: templateName, 
+        language: { 
+          code: templateLanguage
+        },
+        components,
+      }
+    }
+
+    return this.sendMessage(
+      number, 
+      "template", 
+      data, 
+      messageId
+    );
+  }
+
+  /**
    * Extract the contact's name from the WhatsApp webhook payload.
    * 
    * @param payload - The WhatsApp webhook payload.

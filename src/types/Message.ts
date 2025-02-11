@@ -1,4 +1,4 @@
-export type MessageType = "text" | "interactive" | "image" | "document";
+export type MessageType = "text" | "interactive" | "image" | "document" | "template";
 
 export type InteractiveMessageType = "button" | "list";
 
